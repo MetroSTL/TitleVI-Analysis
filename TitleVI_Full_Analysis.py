@@ -173,7 +173,7 @@ medHHInc(root_dir, bg_mergegdb, places, bg_file, inc_file)
 
 
 def senior(rdir, mgdb, plcs, bgf, senf):
-    gdb = f"Poverty{year}.gdb"
+    gdb = f"Senior{year}.gdb"
     ap.env.workspace = os.path.join(rdir, gdb)  # -----> Change Year
     outputgdb = ap.env.workspace
     working_file = "Senior_working"
