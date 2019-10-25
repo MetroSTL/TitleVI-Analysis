@@ -4,11 +4,14 @@ import shutil
 
 # *******GLOBAL VARIABLES*****
 year = str(input('What Year? "YY": '))
-root_dir = r"C:\Users\wkjenkins\Documents\local_gis\titlevi"
+root_dir = input('Root Directory: ')
+acs = input('ACS root folder: ')
+
+
 
 # ACS GDB's ---> USE STANDARD ACS BLOCKGOUP AND TRACT FILES GDB FILES (https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-data.html)
 ## Download format f"https://www2.census.gov/geo/tiger/TIGER_DP/20{year}ACS/ACS_20{year}_5YR_BG_29.gdb.zip"
-bg_mergegdb = f"W:\Research&Development\Data-Share\layers\ACS\ACS_20{year}_5YR_BG\merge.gdb"
+bg_mergegdb = os.path.join(acs, "\ACS_20{year}_5YR_BG\merge.gdb"
 tracts_mergegdb = f"W:\Research&Development\Data-Share\layers\ACS\ACS_20{year}_5YR_TRACT\merge.gdb"
 
 places = r'W:\Research&Development\Data-Share\layers\boundaries\muni\MO_IL_Places_2017.shp'
