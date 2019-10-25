@@ -7,6 +7,7 @@ year = str(input('What Year? "YY": '))
 root_dir = r"C:\Users\wkjenkins\Documents\local_gis\titlevi"
 
 # ACS GDB's ---> USE STANDARD ACS BLOCKGOUP AND TRACT FILES GDB FILES (https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-data.html)
+## Download format f"https://www2.census.gov/geo/tiger/TIGER_DP/20{year}ACS/ACS_20{year}_5YR_BG_29.gdb.zip"
 bg_mergegdb = f"W:\Research&Development\Data-Share\layers\ACS\ACS_20{year}_5YR_BG\merge.gdb"
 tracts_mergegdb = f"W:\Research&Development\Data-Share\layers\ACS\ACS_20{year}_5YR_TRACT\merge.gdb"
 
@@ -182,17 +183,17 @@ def senior(rdir, mgdb, plcs, bgf, senf):
     senior_table = os.path.join(mgdb, senior_file)
 
     # Working file locations
-    cw_file = "Senior_working_County"
+    cw_file = f"Senior{year}_working_County"
     cw = os.path.join(outputgdb, cw_file)
-    rw_file = "Senior_working_Region"
+    rw_file = f"Senior{year}_working_Region"
     rw = os.path.join(outputgdb, rw_file)
-    twcw_file = "Senior_working_CountyJoin"
+    twcw_file = f"Senior{year}_working_CountyJoin"
     twcw = os.path.join(outputgdb, twcw_file)
-    twrw_file = "Senior_working_RegionJoin"
+    twrw_file = f"Senior{year}_working_RegionJoin"
     twrw = os.path.join(outputgdb, twrw_file)
-    twrw_places_file = "Senior_working_RegionJoin_Places"
+    twrw_places_file = f"Senior{year}_working_RegionJoin_Places"
     twrw_places = os.path.join(outputgdb, twrw_places_file)
-    final_file = "Senior_Final"
+    final_file = f"Senior{year}_Final"
     final = os.path.join(outputgdb, final_file)
 
     list = ['B01001e20', 'B01001e21', 'B01001e22', 'B01001e23', 'B01001e24', 'B01001e25', 'B01001e44', 'B01001e45',
@@ -337,17 +338,17 @@ def poverty(rdir, mgdb, plcs, bgf, incf):
     bg = os.path.join(mgdb, bgf)
     working_gdb = os.path.join(rdir, gdb)
 
-    twrw_places_file = "Poverty_working_RegionJoin_Places"
+    twrw_places_file = f"Poverty{year}_working_RegionJoin_Places"
     twrw_places = os.path.join(outputgdb, twrw_places_file)
-    cw_file = "Poverty_working_County"
+    cw_file = f"Poverty{year}_working_County"
     cw = os.path.join(outputgdb, cw_file)
-    rw_file = "Poverty_working_Region"
+    rw_file = f"Poverty{year}_working_Region"
     rw = os.path.join(outputgdb, rw_file)
-    twcw_file = "Poverty_working_CountyJoin"
+    twcw_file = f"Poverty{year}_working_CountyJoin"
     twcw = os.path.join(outputgdb, twcw_file)
-    twrw_file = "Poverty_working_RegionJoin"
+    twrw_file = f"Poverty{year}_working_RegionJoin"
     twrw = os.path.join(outputgdb, twrw_file)
-    final_file = "Poverty_Final"
+    final_file = f"Poverty{year}_Final"
     final = os.path.join(outputgdb, final_file)
     delete_fields = ['GEOID_1', 'SUM_TFam', 'SUM_TPov', 'SUM_TFam', 'SUM_SqMiles', 'SUM_TFam_1', 'SUM_TPov_1', 'SUM_TFam_1', 'SUM_SqMiles_1', 'Join_Count', 'TARGET_FID', 'Join_Count_1', 'TARGET_FID_1', 'Join_Count_12', 'TARGET_FID_12', 'B17010e1', 'C17002e1', 'C17002e2', 'C17002e3', 'C17002e4', 'C17002e5', 'Shape_Length_12', 'Shape_Area_12', 'ALAND_1', 'AWATER_1', 'COUNTYFP_1', 'Shape_Length_1', 'Shape_Area_1', 'STATEFP_1', 'PLACEFP', 'PLACENS', 'AFFGEOID', 'GEOID_12', 'LSAD', 'Shape_Length_1', 'Shape_Area_1', 'COUTNYFP_1', ]
 
@@ -480,17 +481,17 @@ def lep(rdir, mgdb, plcs, bgf, lepf):
     working_gdb = os.path.join(rdir, gdb)
 
     # Working file locations
-    cw_file = "LEP_working_County"
+    cw_file = f"LEP{year}_working_County"
     cw = os.path.join(outputgdb, cw_file)
-    rw_file = "LEP_working_Region"
+    rw_file = f"LEP{year}_working_Region"
     rw = os.path.join(outputgdb, rw_file)
-    twcw_file = "LEP_working_CountyJoin"
+    twcw_file = f"LEP{year}_working_CountyJoin"
     twcw = os.path.join(outputgdb, twcw_file)
-    twrw_file = "LEP_working_RegionJoin"
+    twrw_file = f"LEP{year}_working_RegionJoin"
     twrw = os.path.join(outputgdb, twrw_file)
-    twrw_places_file = "LEP_working_RegionJoin_Places"
+    twrw_places_file = f"LEP{year}_working_RegionJoin_Places"
     twrw_places = os.path.join(outputgdb, twrw_places_file)
-    final_file = "LEP_Final"
+    final_file = f"LEP{year}_Final"
     final = os.path.join(outputgdb, final_file)
 
     # LIST OF FIELDS TO DELETE
@@ -795,7 +796,7 @@ def minority(rdir, mgdb, plcs, bgf, racet, hispt):
     gdb = f"Minority{year}.gdb"
     ap.env.workspace = os.path.join(rdir, gdb)  # -----> Change Year
     outputgdb = ap.env.workspace
-    working_file = "Minority_working"
+    working_file = f"Minority{year}_working"
 
     race_table = os.path.join(mgdb, racet)
     hisp_table = os.path.join(mgdb, hispt)
@@ -805,17 +806,17 @@ def minority(rdir, mgdb, plcs, bgf, racet, hispt):
 
 
     # Working file locations
-    cw_file = "Minority_working_County"
+    cw_file = f"Minority{year}_working_County"
     cw = os.path.join(outputgdb, cw_file)
-    rw_file = "Minority_working_Region"
+    rw_file = f"Minority{year}_working_Region"
     rw = os.path.join(outputgdb, rw_file)
-    twcw_file = "Minority_working_CountyJoin"
+    twcw_file = f"Minority{year}_working_CountyJoin"
     twcw = os.path.join(outputgdb, twcw_file)
-    twrw_file = "Minority_working_RegionJoin"
+    twrw_file = f"Minority{year}_working_RegionJoin"
     twrw = os.path.join(outputgdb, twrw_file)
-    twrw_places_file = "Minority_working_RegionJoin_Places"
+    twrw_places_file = f"Minority{year}_working_RegionJoin_Places"
     twrw_places = os.path.join(outputgdb, twrw_places_file)
-    final_file = "Minority_Final"
+    final_file = f"Minority{year}_Final"
     final = os.path.join(outputgdb, final_file)
 
     delete_fields = ["Join_Count", "Join_Count_1", "TARGET_FID_12", "Target_FID", "Target_FID_1", "Join_Count_12",
@@ -957,18 +958,18 @@ def lowCar(rdir, mgdb, plcs, trctf, commutt):
     working_gdb = os.path.join(rdir, gdb)
 
     tw = os.path.join(working_gdb, "NoCar_working")
-    tw_file = "NoCar_working"
+    tw_file = f"NoCar{year}_working"
     cw = os.path.join(working_gdb, "NoCar_working_County")
-    cw_file = "NoCar_Working_County"
+    cw_file = f"NoCar{year}_Working_County"
     rw = os.path.join(working_gdb, "NoCar_working_Reg")
-    rw_file = "NoCar_Working_Reg"
-    twcw_file = "NoCar_working_CountyJoin"
+    rw_file = f"NoCar{year}_Working_Reg"
+    twcw_file = f"NoCar{year}_working_CountyJoin"
     twcw = os.path.join(working_gdb, twcw_file)
-    twrw_file = "NoCar_working_RegJoin"
+    twrw_file = f"NoCar{year}_working_RegJoin"
     twrw = os.path.join(working_gdb, twrw_file)
-    twrw_places_file = f"LowCar{year}_working_RegionJoin_Places"
+    twrw_places_file = f"NoCar{year}_working_RegionJoin_Places"
     twrw_places = os.path.join(working_gdb, twrw_places_file)
-    final_file = "NoCar_final"
+    final_file = f"NoCar{year}_final"
     final = os.path.join(working_gdb, final_file)
 
     delete_fields = ["Join_Count", "TARGET_FID", "Join_Count", "TARGET_FID", "B08201e2", "B08201e3", "B08201e1",
@@ -1146,19 +1147,19 @@ def idRoutes(rdir):
     minority_gdb = os.path.join(root_dir, f"Minority{year}.gdb")  # -----> Change Year
     poverty_gdb = os.path.join(root_dir, f"Poverty{year}.gdb")  # -----> Change Year
     lep_gdb = os.path.join(root_dir, f"LEP{year}.gdb")
-    minority_file = os.path.join(minority_gdb, "Minority_Final")
-    poverty_file = os.path.join(poverty_gdb, "Poverty_Final")
-    lep_file = os.path.join(lep_gdb, "LEP_Final")
+    minority_file = os.path.join(minority_gdb, f"Minority{year}_Final")
+    poverty_file = os.path.join(poverty_gdb, f"Poverty{year}_Final")
+    lep_file = os.path.join(lep_gdb, f"LEP{year}_Final")
 
     # WORKING FILES
-    minority_working_file = "Minority_BG"
+    minority_working_file = f"Minority{year}_BG"
     minority_working = os.path.join(working_gdb, minority_working_file)
-    poverty_working_file = "Poverty_BG"
+    poverty_working_file = f"Poverty{year}_BG"
     poverty_working = os.path.join(working_gdb, poverty_working_file)
-    lep_working_file = "LEP_BG"
+    lep_working_file = f"LEP{year}_BG"
     lep_working = os.path.join(working_gdb, lep_file)
 
-    routes_file = "IdentifiedRoutes"
+    routes_file = f"IdentifiedRoutes{year}"
     routes_working = os.path.join(working_gdb, routes_file)
 
     working_list = [[minority_file, minority_working_file, "RegMinBG",
