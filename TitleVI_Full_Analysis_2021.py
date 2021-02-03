@@ -14,7 +14,7 @@ from poverty import *
 
 # *******GLOBAL VARIABLES*****
 # year = str(input('What Year? "YY": '))
-year = '18'
+year = '13'
 root_dir = r"C:\Users\wkjenkins\gis\titlevi\20210119\new_output"
 
 # ACS GDB's ---> USE STANDARD ACS BLOCKGOUP AND TRACT FILES GDB FILES (https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-data.html)
@@ -47,12 +47,20 @@ inc_file = "X19_INCOME"
 final_gdb = f'Final_{year}.gdb'
 final_gdb_loc = os.path.join(root_dir, final_gdb)
 
+ap.ClearWorkspaceCache_management()
+
 replaceGDB(root_dir, final_gdb)
 
 medHHInc(year, root_dir, bg_mergegdb, region, places, bg_file, inc_file, final_gdb_loc)
+
 senior(year, root_dir, bg_mergegdb, region, places, bg_file, senior_file, final_gdb_loc)
+
 poverty(year, root_dir, bg_mergegdb, region, places, bg_file, pov_file, final_gdb_loc)
+
 lep(year, root_dir, bg_mergegdb, region, places, bg_file, lep_file, final_gdb_loc)
+
 minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hisp_file, final_gdb_loc)
+
 lowCar(year, root_dir, tracts_mergegdb, region, places, tracts_file, commute_file, final_gdb_loc)
+
 idRoutes(year, root_dir, routes, final_gdb_loc)

@@ -8,6 +8,8 @@ from helpers import *
 def senior(year, root_dir, bg_mergedgdb, region, places, bg_file, sen_file, final_gdb_loc):
     gdb = f"Senior{year}.gdb"
     ap.env.workspace = os.path.join(root_dir, gdb)  # -----> Change Year
+    ap.ClearWorkspaceCache_management()
+
     outputgdb = ap.env.workspace
     working_file = f"Senior{year}_working"
 
@@ -29,7 +31,7 @@ def senior(year, root_dir, bg_mergedgdb, region, places, bg_file, sen_file, fina
     final_file = f"Senior{year}_Final"
     final = os.path.join(outputgdb, final_file)
 
-    list = ['B01001e20', 'B01001e21', 'B01001e22', 'B01001e23', 'B01001e24', 'B01001e25', 'B01001e44', 'B01001e45',
+    delete_fields = ['B01001e20', 'B01001e21', 'B01001e22', 'B01001e23', 'B01001e24', 'B01001e25', 'B01001e44', 'B01001e45',
             'B01001e46', 'B01001e47', 'B01001e48', 'B01001e49', 'B01001e1', 'Join_Count', 'TARGET_FID',
             'Join_Count_1', 'TARGET_FID_1', 'Join_Count_12', 'TARGET_FID_12', 'COUNTYFP_1', 'SUM_TPop', 'SUM_SqMiles',
             'SUM_TSenior', 'Shape_Length_1', 'Shape_Area_1', 'CoAbvSenior_1', 'SUM_TPop_1', 'SUM_SqMiles_1',
@@ -156,19 +158,23 @@ def senior(year, root_dir, bg_mergedgdb, region, places, bg_file, sen_file, fina
     print("---------------------------")
     print("Places Spaital Join")
 
-    # CREATE FINAL FEATURE CLASS
-    ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
-    print("---------------------------")
+    # # CREATE FINAL FEATURE CLASS
+    # ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
+    # print("---------------------------")
 
-    for field in list:
-        ap.DeleteField_management(final_file, field)
-        print("---------------------------")
-        print(field + " DELETED")
-        print("---------------------------")
+    # for field in list:
+    #     ap.DeleteField_management(final_file, field)
+    #     print("---------------------------")
+    #     print(field + " DELETED")
+    #     print("---------------------------")
+    #
+    # print("Senior_Final feature class created - Script Complete!!!")
+    #
+    # # CREATE FINAL FEATURE CLASS
+    # ap.ClearWorkspaceCache_management()
+    #
+    # deleteFeatureClass(final_file, final_gdb_loc)
+    # ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
+    # print("---------------------------")
 
-    print("Senior_Final feature class created - Script Complete!!!")
-
-    # CREATE FINAL FEATURE CLASS
-    deleteFeatureClass(final_file, final_gdb_loc)
-    ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
-    print("---------------------------")
+    cleanUp(twrw_places, gdb, final_file, final_gdb_loc, delete_fields)

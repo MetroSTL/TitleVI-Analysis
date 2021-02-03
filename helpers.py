@@ -80,3 +80,24 @@ def joinAndCalcFields(fc, census_gdb, output_gdb, key, table, table_key, fields_
         ap.CalculateField_management(fc, field, f"!{field}! * !coverage!")
         print(f"{field} calculated")
     ap.env.workspace = org_loc
+
+def cleanUp(twrw_places, gdb, final_file, final_gdb_loc, delete_fields):
+    deleteFeatureClass(final_file, final_gdb_loc)
+
+    ap.FeatureClassToFeatureClass_conversion(twrw_places, ap.env.workspace, final_file)
+
+    for field in delete_fields:
+        ap.DeleteField_management(final_file, field)
+        print("---------------------------")
+        print(field + " DELETED")
+        print("---------------------------")
+
+    print("Minority_Final feature class created - Script Complete!!!")
+
+    ap.ClearWorkspaceCache_management()
+
+    deleteFeatureClass(final_file, final_gdb_loc)
+
+    # CREATE FINAL FEATURE CLASS
+    ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
+    print("---------------------------")

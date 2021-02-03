@@ -7,6 +7,9 @@ from helpers import *
 def lep(year, root_dir, bg_mergedgdb, region, places, bg_file, lep_file, final_gdb_loc):
     gdb = f"LEP{year}.gdb"
     ap.env.workspace = os.path.join(root_dir, gdb)  # -----> Change Year
+
+    ap.ClearWorkspaceCache_management()
+
     outputgdb = ap.env.workspace
     working_file = "LEP_working"
 
@@ -329,27 +332,32 @@ def lep(year, root_dir, bg_mergedgdb, region, places, bg_file, lep_file, final_g
     print("---------------------------")
     print("Places Spaital Join")
 
-    # CREATE FINAL FEATURE CLASS
-    ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
-    print("")
-    print("---------------------------")
-    print("LEP_Final feature class created - Script Complete!!!")
+    # # CREATE FINAL FEATURE CLASS
+    # ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
+    # print("")
+    # print("---------------------------")
+    # print("LEP_Final feature class created - Script Complete!!!")
 
-    # FOR LOOP FOR CLEANING UP TABLE BY DELETING OUT ALL OF THE FIELDS IN THE DELETE_FIELDS LIST
-    for field in delete_fields:
-        ap.DeleteField_management(final_file, field)
-        print("")
-        print("---------------------------")
-        print(field + " DELETED")
-        print("---------------------------")
+    # # FOR LOOP FOR CLEANING UP TABLE BY DELETING OUT ALL OF THE FIELDS IN THE DELETE_FIELDS LIST
+    # for field in delete_fields:
+    #     ap.DeleteField_management(final_file, field)
+    #     print("")
+    #     print("---------------------------")
+    #     print(field + " DELETED")
+    #     print("---------------------------")
+    #
+    # print("")
+    # print("---------------------------")
+    # print("Finished Cleaning up fields")
+    # print("---------------------------")
+    # print("")
+    # print('Finished Running tool')
+    # ap.ClearWorkspaceCache_management()
+    #
+    # deleteFeatureClass(final_file, final_gdb_loc)
+    #
+    # # CREATE FINAL FEATURE CLASS
+    # ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
+    # print("---------------------------")
 
-    print("")
-    print("---------------------------")
-    print("Finished Cleaning up fields")
-    print("---------------------------")
-    print("")
-    print('Finished Running tool')
-
-    # CREATE FINAL FEATURE CLASS
-    ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
-    print("---------------------------")
+    cleanUp(twrw_places, gdb, final_file, final_gdb_loc, delete_fields)

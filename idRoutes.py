@@ -6,7 +6,10 @@ from helpers import *
 
 def idRoutes(year, root_dir, routes, final_gdb_loc):
     gdb = f"IdentifiedRoutes{year}.gdb"
-    ap.env.workspace = os.path.join(root_dir, gdb)  # -----> Change Year
+    ap.env.workspace = os.path.join(root_dir, gdb)  # -----> Change
+
+    ap.ClearWorkspaceCache_management()
+
     working_gdb = ap.env.workspace
     working_file = "IdentifiedRoutes_working"
 
@@ -126,7 +129,12 @@ def idRoutes(year, root_dir, routes, final_gdb_loc):
         ap.DeleteField_management(routes_working, "SUM_IdLength")
         print("IdLength Field Deleted")
 
-        # CREATE FINAL FEATURE CLASS
+    ap.ClearWorkspaceCache_management()
+
+    deleteFeatureClass(routes_file, final_gdb_loc)
+
+
+    # CREATE FINAL FEATURE CLASS
     ap.FeatureClassToFeatureClass_conversion(routes_file, final_gdb_loc, routes_file)
     print("---------------------------")
 

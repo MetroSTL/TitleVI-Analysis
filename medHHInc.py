@@ -8,8 +8,8 @@ def medHHInc(year, root_dir, bg_mergegdb, region, places, bg_file, inc_file, fin
 
     gdb = f"MedHHInc{year}.gdb"
     ap.env.workspace = os.path.join(root_dir, gdb)  # -----> Change Year
+    ap.ClearWorkspaceCache_management()
     outputgdb = ap.env.workspace
-    bg = os.path.join(bg_mergegdb, bg_file)
 
 
     # LOCAL VARIABLES
@@ -37,7 +37,7 @@ def medHHInc(year, root_dir, bg_mergegdb, region, places, bg_file, inc_file, fin
 
     replaceGDB(root_dir, gdb)
 
-    fields_list= ['B19001e1','B19049e1']
+    fields_list = ['B19001e1','B19049e1']
     
     clipPolygons(bg_mergegdb, bg_file, region, os.path.join(root_dir, gdb), working_file)
     joinAndCalcFields(working_file, bg_mergegdb, os.path.join(root_dir, gdb), 'GEOID_Data', inc_file, 'GEOID', fields_list)
@@ -120,15 +120,25 @@ def medHHInc(year, root_dir, bg_mergegdb, region, places, bg_file, inc_file, fin
     print("---------------------------")
     print("Places Spaital Join")
 
-    # CREATE FINAL FEATURE CLASS
-    ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
-    print("")
-    print("---------------------------")
-    print("MedHHInc_Final feature class created - Script Complete!!!")
 
-    for field in delete_fields:
-        ap.DeleteField_management(final_file, field)
-        print("")
-        print("---------------------------")
-        print(field + " DELETED")
-        print("---------------------------")
+    # for field in delete_fields:
+    #     try:
+    #         ap.DeleteField_management(twrw_places, field)
+    #         print("")
+    #         print("---------------------------")
+    #         print(field + " DELETED")
+    #         print("---------------------------")
+    #     except:
+    #         print(field + ' does not exist')
+    #
+    # ap.ClearWorkspaceCache_management()
+    #
+    # deleteFeatureClass(final_file, final_gdb_loc)
+    #
+    # # CREATE FINAL FEATURE CLASS
+    # ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
+    # print("")
+    # print("---------------------------")
+    # print("MedHHInc_Final feature class created - Script Complete!!!")
+
+    cleanUp(twrw_places, gdb, final_file, final_gdb_loc, delete_fields)

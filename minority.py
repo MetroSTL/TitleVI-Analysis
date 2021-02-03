@@ -7,6 +7,9 @@ from helpers import *
 def minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hisp_file, final_gdb_loc):
     gdb = f"Minority{year}.gdb"
     ap.env.workspace = os.path.join(root_dir, gdb)  # -----> Change Year
+
+    ap.ClearWorkspaceCache_management()
+
     outputgdb = ap.env.workspace
     working_file = f"Minority{year}_working"
 
@@ -240,18 +243,21 @@ def minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hi
     print("---------------------------")
     print("Places Spaital Join")
 
-    # CREATE FINAL FEATURE CLASS
-    ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
-    print("---------------------------")
 
-    for field in delete_fields:
-        ap.DeleteField_management(final_file, field)
-        print("---------------------------")
-        print(field + " DELETED")
-        print("---------------------------")
+    # for field in delete_fields:
+    #     ap.DeleteField_management(twrw_places, field)
+    #     print("---------------------------")
+    #     print(field + " DELETED")
+    #     print("---------------------------")
+    #
+    # print("Minority_Final feature class created - Script Complete!!!")
+    #
+    # ap.ClearWorkspaceCache_management()
+    #
+    # deleteFeatureClass(final_file, final_gdb_loc)
+    #
+    # # CREATE FINAL FEATURE CLASS
+    # ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
+    # print("---------------------------")
 
-    print("Minority_Final feature class created - Script Complete!!!")
-
-    # CREATE FINAL FEATURE CLASS
-    ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
-    print("---------------------------")
+    cleanUp(twrw_places, gdb, final_file, final_gdb_loc, delete_fields)

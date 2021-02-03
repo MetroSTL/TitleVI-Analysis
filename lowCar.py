@@ -8,15 +8,13 @@ from helpers import *
 def lowCar(year, root_dir, tracts_mergegdb, region, places, tracts_file, commute_file, final_gdb_loc):
     gdb = f"LowCar{year}.gdb"
     ap.env.workspace = os.path.join(root_dir, gdb)  # -----> Change Year
+    ap.ClearWorkspaceCache_management()
+
     outputgdb = ap.env.workspace
     working_file = "LowCar_working"
 
-    commute_table = os.path.join(tracts_mergegdb, commute_file)
-    tract = os.path.join(tracts_mergegdb, tracts_file)
     working_gdb = os.path.join(root_dir, gdb)
 
-    tw = os.path.join(working_gdb, "NoCar_working")
-    tw_file = f"NoCar{year}_working"
     cw = os.path.join(working_gdb, "NoCar_working_County")
     cw_file = f"NoCar{year}_Working_County"
     rw = os.path.join(working_gdb, "NoCar_working_Reg")
@@ -28,28 +26,10 @@ def lowCar(year, root_dir, tracts_mergegdb, region, places, tracts_file, commute
     twrw_places_file = f"NoCar{year}_working_RegionJoin_Places"
     twrw_places = os.path.join(working_gdb, twrw_places_file)
     final_file = f"NoCar{year}_final"
-    final = os.path.join(working_gdb, final_file)
 
     delete_fields = ["Join_Count", "TARGET_FID", "Join_Count", "TARGET_FID", "B08201e2", "B08201e3", "B08201e1",
                      "B08201e2", "B08201e3", "SUM_THH", "SUM_TNoCar", "SUM_TOneCar", "SUM_SqMiles", "SUM_THH_1",
                      "SUM_TNoCar_1", "SUM_TOneCar_1", "SUM_SqMiles_1", "Shape_Length_12", "Shape_Area_12"]
-
-    # if os.path.exists(working_gdb) and os.path.isdir(working_gdb):
-    #     shutil.rmtree(working_gdb)
-    #     print(f"{gdb} DELETED!!!")
-
-    # # CREATE WORKING GDB
-    # ap.CreateFileGDB_management(root_dir, gdb)
-    # print("GEODATABASE CREATED!!!")
-
-    # # FEATURE CLASS TO WORKING FEATURE CLASS
-    # ap.FeatureClassToFeatureClass_conversion(tract, outputgdb, working_file,
-    #                                          "GEOID LIKE '29189%' Or GEOID LIKE '29510%' Or GEOID LIKE '17163%'")
-    # print(tw_file + " Created!!!")
-
-    # # JOIN WORKING FEATURE CLASS TO CENSUS TABLE - FILTER OUT SELECT COUNTIES IN REGION
-    # ap.JoinField_management(working_file, "GEOID_DATA", commute_table, "GEOID", ["B08201e1", "B08201e2", "B08201e3"])
-    # print(tw_file + " Joined with No Car Table file!!!")
 
     replaceGDB(root_dir, gdb)
 
@@ -195,14 +175,20 @@ def lowCar(year, root_dir, tracts_mergegdb, region, places, tracts_file, commute
     print("Places Spaital Join")
 
     # CREATE FINAL FEATURE CLASS
-    ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
-    print("NoCar_final feature class created - Script Complete!!!")
+    # ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
+    # print("NoCar_final feature class created - Script Complete!!!")
 
-    # FOR LOOP FOR CLEANING UP TABLE BY DELETING OUT ALL OF THE FIELDS IN THE DELETE_FIELDS LIST
-    for field in delete_fields:
-        ap.DeleteField_management(final_file, field)
-        print(field + " DELETED")
+    # # FOR LOOP FOR CLEANING UP TABLE BY DELETING OUT ALL OF THE FIELDS IN THE DELETE_FIELDS LIST
+    # for field in delete_fields:
+    #     ap.DeleteField_management(final_file, field)
+    #     print(field + " DELETED")
+    #
+    #
+    # deleteFeatureClass(final_file, final_gdb_loc)
+    # ap.ClearWorkspaceCache_management()
+    #
+    # # CREATE FINAL FEATURE CLASS
+    # ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
+    # print("---------------------------")
 
-    # CREATE FINAL FEATURE CLASS
-    ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
-    print("---------------------------")
+    cleanUp(twrw_places, gdb, final_file, final_gdb_loc, delete_fields)
