@@ -14,24 +14,42 @@ def idRoutes(year, root_dir, routes, final_gdb_loc):
     working_file = "IdentifiedRoutes_working"
 
 
-    minority_gdb = os.path.join(root_dir, f"Minority{year}.gdb")  # -----> Change Year
-    poverty_gdb = os.path.join(root_dir, f"Poverty{year}.gdb")  # -----> Change Year
-    lep_gdb = os.path.join(root_dir, f"LEP{year}.gdb")
-    minority_file = os.path.join(minority_gdb, f"Minority{year}_Final")
-    poverty_file = os.path.join(poverty_gdb, f"Poverty{year}_Final")
-    lep_file = os.path.join(lep_gdb, f"LEP{year}_Final")
+    # minority_gdb = os.path.join(root_dir, f"Minority{year}.gdb")  # -----> Change Year
+    # poverty_gdb = os.path.join(root_dir, f"Poverty{year}.gdb")  # -----> Change Year
+    # lep_gdb = os.path.join(root_dir, f"LEP{year}.gdb")
+    minority_file = os.path.join(final_gdb_loc, f"Minority{year}_Final")
+    # minority_file = os.path.join(minority_gdb, f"Minority{year}_Final")
+    poverty_file = os.path.join(final_gdb_loc, f"Poverty{year}_Final")
+    # poverty_file = os.path.join(poverty_gdb, f"Poverty{year}_Final")
+    lep_file = os.path.join(final_gdb_loc, f"LEP{year}_Final")
+    medhhinc_file = os.path.join(final_gdb_loc, f"MedHHInc{year}_Final")
+    # lep_file = os.path.join(lep_gdb, f"LEP{year}_Final")
 
     # WORKING FILES
     minority_working_file = f"Minority{year}_BG"
     poverty_working_file = f"Poverty{year}_BG"
     lep_working_file = f"LEP{year}_BG"
+    medhhinc_working_file = f"MedHHInc{year}_BG"
 
     routes_file = f"IdentifiedRoutes{year}"
     routes_working = os.path.join(working_gdb, routes_file)
 
-    working_list = [[minority_file, minority_working_file, "RegMinBG",[['MinorityLength', 'double'], ['PMinority', 'double'], ['MinorityRoute', 'SHORT']]],
-                    [poverty_file, poverty_working_file, "RegPovBG",[['PovertyLength', 'double'], ['PPoverty', 'double'], ['PovertyRoute', 'SHORT']]],
-                    [lep_file, lep_working_file, "RegAbvLEP", [['LEPLength', 'double'], ['PLEP', 'double'], ['LEPRoute', 'SHORT']]]]
+    working_list = [{"org_file": minority_file, 
+                     "working_file":  minority_working_file, 
+                     "identified_field": "RegMinBG",
+                     "add_fields": [['MinorityLength', 'double'], ['PMinority', 'double'], ['MinorityRoute', 'SHORT']]},
+                    {"org_file": poverty_file, 
+                     "working_file":  poverty_working_file, 
+                     "identified_field": "RegPovBG", 
+                     "add_fields": [['PovertyLength', 'double'], ['PPoverty', 'double'], ['PovertyRoute', 'SHORT']]},
+                    {"org_file": medhhinc_file, 
+                     "working_file":  medhhinc_working_file, 
+                     "identified_field": "RegBelMedInc", 
+                     "add_fields": [['MedHHIncLength', 'double'], ['PMedHHInc', 'double'], ['MedHHIncRoute', 'SHORT']]},
+                    {"org_file": lep_file, 
+                     "working_file":  lep_working_file, 
+                     "identified_field": "RegAbvLEP",
+                     "add_fields": [['LEPLength', 'double'],['PLEP', 'double'], ['LEPRoute', 'SHORT']]}]
 
     if os.path.exists(working_gdb) and os.path.isdir(working_gdb):
         shutil.rmtree(working_gdb)
@@ -53,14 +71,14 @@ def idRoutes(year, root_dir, routes, final_gdb_loc):
 
     for item in working_list:
         # WORKING LIST ITEM DEFINITIONS
-        org_file = item[0]
-        working_file = item[1]
-        identified_field = item[2]
-        add_fields = item[3]
+        org_file = item["org_file"]
+        working_file = item["working_file"]
+        identified_field = item["identified_field"]
+        add_fields = item["add_fields"]
         routes_analysis = "routes_" + str(working_file)
-        length_field = item[3][0][0]
-        percent_field = item[3][1][0]
-        id_field = item[3][2][0]
+        length_field = add_fields[0][0]
+        percent_field = add_fields[1][0]
+        id_field = add_fields[2][0]
 
         print("")
         print("--------------------------------")

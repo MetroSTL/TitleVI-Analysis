@@ -29,7 +29,9 @@ def clipCalc(table, fields):
     print(f"Finished Calculating Fields for {table}!!!")
 
 def replaceGDB(root_dir, gdb):
-    deleteFolder(os.path.join(root_dir,gdb))
+    if os.path.exists(os.path.join(root_dir, gdb)):
+        ap.ClearWorkspaceCache_management(os.path.join(root_dir, gdb))
+        deleteFolder(os.path.join(root_dir,gdb))
     ap.CreateFileGDB_management(root_dir, gdb)
     print("GEODATABASE CREATED!!!")
 
@@ -101,3 +103,12 @@ def cleanUp(twrw_places, gdb, final_file, final_gdb_loc, delete_fields):
     # CREATE FINAL FEATURE CLASS
     ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
     print("---------------------------")
+
+
+def checkforfield(fc, field, type):
+    if field not in ap.ListFields(fc, field):
+        return
+    else:
+        ap.DeleteField_management(fc, field)
+        ap.AddField_management(fc, field, type)
+    

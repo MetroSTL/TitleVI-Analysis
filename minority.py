@@ -13,12 +13,10 @@ def minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hi
     outputgdb = ap.env.workspace
     working_file = f"Minority{year}_working"
 
-    race_table = os.path.join(bg_mergegdb, race_file)
-    hisp_table = os.path.join(bg_mergegdb, hisp_file)
-    bg = os.path.join(bg_mergegdb, bg_file)
-    working_gdb = os.path.join(root_dir, gdb)
-
-
+   #  race_table = os.path.join(bg_mergegdb, race_file)
+   #  hisp_table = os.path.join(bg_mergegdb, hisp_file)
+   #  bg = os.path.join(bg_mergegdb, bg_file)
+   #  working_gdb = os.path.join(root_dir, gdb)
 
     # Working file locations
     cw_file = f"Minority{year}_working_County"

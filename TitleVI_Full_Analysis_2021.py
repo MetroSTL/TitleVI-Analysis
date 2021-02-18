@@ -15,8 +15,10 @@ from tni import *
 
 # *******GLOBAL VARIABLES*****
 # year = str(input('What Year? "YY": '))
-year = '18'
+year = '13'
 root_dir = r"C:\Users\wkjenkins\gis\titlevi\20210119\new_output"
+
+census_key = '926b40d26ccd30996f8a0222ce5d4458240a7ac2'
 
 # ACS GDB's ---> USE STANDARD ACS BLOCKGOUP AND TRACT FILES GDB FILES (https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-data.html)
 ## Download format f"https://www2.census.gov/geo/tiger/TIGER_DP/20{year}ACS/ACS_20{year}_5YR_BG_29.gdb.zip"
@@ -31,7 +33,7 @@ region = r'C:\Users\wkjenkins\gis\titlevi\20210119\python_input\Region.shp'
 
 # GEOMETRY FILES
 bg_file = f"ACS_20{year}_5YR_BG"
-tracts_file = f"ACS_20{year}_5YR_TRACT_Region"
+tracts_file = f"ACS_20{year}_5YR_TRACT"
 
 # DB TABLES
 senior_file = "X01_AGE_AND_SEX"
@@ -58,12 +60,12 @@ ap.ClearWorkspaceCache_management()
 
 # poverty(year, root_dir, bg_mergegdb, region, places, bg_file, pov_file, final_gdb_loc)
 
-# lep(year, root_dir, bg_mergegdb, region, places, bg_file, lep_file, final_gdb_loc)
+lep(year, root_dir, bg_mergegdb, region, places, bg_file, lep_file, final_gdb_loc, census_key, tracts_mergegdb, tracts_file)
 
-# minority_fc = minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hisp_file, final_gdb_loc)
+# minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hisp_file, final_gdb_loc)
 
 # lowCar(year, root_dir, tracts_mergegdb, region, places, tracts_file, commute_file, final_gdb_loc)
 
 # idRoutes(year, root_dir, routes, final_gdb_loc)
 
-tni(year, root_dir, final_gdb_loc)
+# tni(year, root_dir, final_gdb_loc)
