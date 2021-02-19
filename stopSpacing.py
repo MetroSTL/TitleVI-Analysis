@@ -9,7 +9,7 @@ from helpers import *
 # takes in Routes By Direction from the open data store as input
 # creates a couple of databases 1 to split the gdb
 
-year = '13'
+year = '18'
 root_dir = r"C:\Users\wkjenkins\gis\titlevi\20210119\new_output"
 gdb = r"C:\Users\wkjenkins\gis\titlevi\20210119\new_output\final.gdb"
 routes_gdb = r"C:\Users\wkjenkins\gis\titlevi\20210119\arcpro\routes.gdb"
@@ -103,8 +103,40 @@ split_route_list = arcpy.ListFeatureClasses('_split')
 
 merge_routes_split = arcpy.Merge_management(split_route_list, os.path.join(gdb, f'RoutesSplit_{year}'))[0]
 
+# breaks here!
+# merge all spilt route in gdb to the same feature class
+# calculate length
+
+# reclassify routes
+# use isPassing Calc to flag each seg by route type and length
+
+# dissolve routes by passing and not passing. 
+# calc total length, passing length, failing length, passing segments and failing segments
+
+# future development add in road classifications for density
 
 if 'LengthMiles' in arcpy.Describe(merge_routes_split).fields:
     arcpy.DeleteField_management(merge_routes_split, 'LengthMiles')
 
 arcpy.CalculateField_management(merge_routes_split, 'LengthMiles', "!shape.length@miles!")
+
+# distance passing calculations
+
+def isPassing(type, length):
+    if type == "Frequent":
+        if length > 0.25 & length < 0.33:
+            return 1
+        else:
+            return 0
+    elif type == "Local":
+        if length <= 0.25:
+            return 1
+        else:
+            return 0
+    elif type == "Community":
+        if length <= 0.25:
+            return 1
+        else:
+            return 0
+    else:
+       return 2
