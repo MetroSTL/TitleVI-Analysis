@@ -1,24 +1,28 @@
+# ! are the imports needed if they are defined in main?
 import arcpy as ap
 import os
 import shutil
 
 from helpers import *
 
+# Uses census inputs to calculate totals and percentage of minority groups in each census block group.
+# Then, determine which blockgroups are greater than the regional average for minority percentage.
 def minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hisp_file, final_gdb_loc):
     gdb = f"Minority{year}.gdb"
-    ap.env.workspace = os.path.join(root_dir, gdb)  # -----> Change Year
+    ap.env.workspace = os.path.join(root_dir, gdb)
 
     ap.ClearWorkspaceCache_management()
 
     outputgdb = ap.env.workspace
     working_file = f"Minority{year}_working"
 
+   # ! can these go? (Wondering this for basically all comments in this function)
    #  race_table = os.path.join(bg_mergegdb, race_file)
    #  hisp_table = os.path.join(bg_mergegdb, hisp_file)
    #  bg = os.path.join(bg_mergegdb, bg_file)
    #  working_gdb = os.path.join(root_dir, gdb)
 
-    # Working file locations
+    # Working feature class locations
     cw_file = f"Minority{year}_working_County"
     cw = os.path.join(outputgdb, cw_file)
     rw_file = f"Minority{year}_working_Region"
@@ -32,19 +36,13 @@ def minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hi
     final_file = f"Minority{year}_Final"
     final = os.path.join(outputgdb, final_file)
 
-    delete_fields = ["Join_Count", "Join_Count_1", "TARGET_FID_12", "Target_FID", "Target_FID_1", "Join_Count_12",
-                     "Geoid_1", "B02001e1", "B02001e2", "B02001e3", "B02001e4", "B02001e5", "B02001e6", "B02001e7",
-                     "B02001e8", "B02001e9", "B02001e10", "B03002e13", "SUM_TPop", "SUM_TMinority", "SUM_SqMiles",
-                     "SUM_TPop_1", "SUM_TMinority_1", "SUM_SqMiles_1", "GEOID_12_13", "PLACENS", "PLACEFP", "STATEFP_1",
-                     "SHAPE_LENGTH_12", "SHAPE_AREA_12", "SHAPE_LENGTH_1", "SHAPE_LENGTH_1", "COUNTYFP_1", "GEOID_12", "SUM_TWhite",
-                     "SUM_TBlack", "SUM_TNativeAm", "SUM_TAsian", "SUM_TPacIsland", "SUM_TOther", "SUM_THispanic",
-                     "SUM_TWhite_1", "SUM_TBlack_1", "SUM_TNativeAm_1", "SUM_TAsian_1", "SUM_TPacIsland_1", "SUM_TOther_1", "SUM_THispanic_1"]
-
+    # CREATE WORKING GDB
     replaceGDB(root_dir, gdb)
 
     race_fields_list = ["B02001e1", "B02001e3", "B02001e4", "B02001e5", "B02001e6", "B02001e7", "B02001e8"]
     hisp_fields_list = ["B03002e13"]
 
+    # Clip blockgroups by the region shape, and keep only fields of interest
     # clipPolygons(census_gdb, census_file, boundary_file, output_gdb, output_file, join_table, fields_list)
     clipPolygons(bg_mergegdb, bg_file, region, os.path.join(root_dir, gdb), working_file)
     # joinAndCalcFields(fc, census_gdb, output_gdb, key, table, table_key, fields_list)
@@ -125,6 +123,7 @@ def minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hi
     print("---------------------------")
     print("Dissolve Region Stats")
 
+    # ! Why is county in here? (I am actually asking)
     ap.management.AddFields(cw, [["CoTPop", "Double"],
                                  ["CoTMinority", "Double"],
                                  ["CoPMinority", "Double"],
@@ -203,17 +202,17 @@ def minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hi
     print("---------------------------")
     print(rw_file + " fields calculated !!!")
 
-    # SPATIAL JOIN TRACTS FILE WITH RegUNTY FILE
+    # SPATIAL JOIN TRACTS FILE WITH COUNTY FILE
     ap.SpatialJoin_analysis(working_file, cw, twcw)
     print("---------------------------")
-    print("County Spaital Join")
+    print("County Spatial Join")
 
     # SPATIAL JOIN TRACTS FILE WITH REGION FILE
     ap.SpatialJoin_analysis(twcw, rw, twrw)
     print("---------------------------")
-    print("Region Spaital Join")
+    print("Region Spatial Join")
 
-
+    # Compare each block group's minority percentage to the region, and flag if greater
     # NEW WAY OF CALCULATION USING PERCENTAGE
     ap.CalculateFields_management(in_table=twrw, expression_type="PYTHON3",
                                   fields="CoMinBG 'ifBlock(!PMinority!, !CoPMinority!)';RegMinBG 'ifBlock(!PMinority!, !RegPMinority!)'",
@@ -239,9 +238,9 @@ def minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hi
     # SPATIAL JOIN TRACTS FILE WITH PLACES FILE
     ap.SpatialJoin_analysis(twrw, places, twrw_places)
     print("---------------------------")
-    print("Places Spaital Join")
+    print("Places Spatial Join")
 
-
+    # ! this is all in cleanUp now, yeah?
     # for field in delete_fields:
     #     ap.DeleteField_management(twrw_places, field)
     #     print("---------------------------")
@@ -257,5 +256,15 @@ def minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hi
     # # CREATE FINAL FEATURE CLASS
     # ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
     # print("---------------------------")
+
+    # remove these unnecessary fields in the cleanup stage
+    delete_fields = ["Join_Count", "Join_Count_1", "TARGET_FID_12", "Target_FID", "Target_FID_1", "Join_Count_12",
+                     "Geoid_1", "B02001e1", "B02001e2", "B02001e3", "B02001e4", "B02001e5", "B02001e6", "B02001e7",
+                     "B02001e8", "B02001e9", "B02001e10", "B03002e13", "SUM_TPop", "SUM_TMinority", "SUM_SqMiles",
+                     "SUM_TPop_1", "SUM_TMinority_1", "SUM_SqMiles_1", "GEOID_12_13", "PLACENS", "PLACEFP", "STATEFP_1",
+                     "SHAPE_LENGTH_12", "SHAPE_AREA_12", "SHAPE_LENGTH_1", "SHAPE_LENGTH_1", "COUNTYFP_1", "GEOID_12", "SUM_TWhite",
+                     "SUM_TBlack", "SUM_TNativeAm", "SUM_TAsian", "SUM_TPacIsland", "SUM_TOther", "SUM_THispanic",
+                     "SUM_TWhite_1", "SUM_TBlack_1", "SUM_TNativeAm_1", "SUM_TAsian_1", "SUM_TPacIsland_1", "SUM_TOther_1", "SUM_THispanic_1"]
+
 
     cleanUp(twrw_places, gdb, final_file, final_gdb_loc, delete_fields)

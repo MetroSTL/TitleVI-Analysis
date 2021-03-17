@@ -1,9 +1,11 @@
+# ! should all of these be defined in one place? (I'm actually asking)
 import arcpy as ap
 import os
 import shutil
 
 from helpers import *
 
+# import functions from each of the helper files
 from medHHInc import *
 from senior import *
 from idRoutes import *
@@ -18,6 +20,7 @@ from tni import *
 year = '13'
 root_dir = r"C:\Users\wkjenkins\gis\titlevi\20210119\new_output"
 
+# api key to access census data using the Census package
 census_key = '926b40d26ccd30996f8a0222ce5d4458240a7ac2'
 
 # ACS GDB's ---> USE STANDARD ACS BLOCKGOUP AND TRACT FILES GDB FILES (https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-data.html)
@@ -31,11 +34,11 @@ routes = r'C:\Users\wkjenkins\gis\titlevi\20210119\python_input\MetroBusRoutes_C
 region = r'C:\Users\wkjenkins\gis\titlevi\20210119\python_input\Region.shp'
 
 
-# GEOMETRY FILES
-bg_file = f"ACS_20{year}_5YR_BG"
-tracts_file = f"ACS_20{year}_5YR_TRACT"
+# INPUT GEOMETRY FILES - names of GDB's
+bg_file = f"ACS_20{year}_5YR_BG" # census blockgroups
+tracts_file = f"ACS_20{year}_5YR_TRACT" # census tracts
 
-# DB TABLES
+# DB TABLES - Feature class names
 senior_file = "X01_AGE_AND_SEX"
 race_file = "X02_RACE"
 hisp_file = "X03_HISPANIC_OR_LATINO_ORIGIN"
@@ -50,9 +53,15 @@ inc_file = "X19_INCOME"
 final_gdb = f'Final_{year}.gdb'
 final_gdb_loc = os.path.join(root_dir, final_gdb)
 
+# ! briefly -- why is this here?
 ap.ClearWorkspaceCache_management()
 
-# replaceGDB(root_dir, final_gdb)
+
+# # Call each of the major functions to create fature classes with
+# # statistics for each of the demographics outlined in each function.
+
+# replace the output GDB with an empty one at the start
+# replaceGDB(root_dir, final_gdb) # from helpers.py
 
 # medHHInc(year, root_dir, bg_mergegdb, region, places, bg_file, inc_file, final_gdb_loc)
 
@@ -60,6 +69,7 @@ ap.ClearWorkspaceCache_management()
 
 # poverty(year, root_dir, bg_mergegdb, region, places, bg_file, pov_file, final_gdb_loc)
 
+# ! why does lep use the census key and the other functions do not?
 lep(year, root_dir, bg_mergegdb, region, places, bg_file, lep_file, final_gdb_loc, census_key, tracts_mergegdb, tracts_file)
 
 # minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hisp_file, final_gdb_loc)

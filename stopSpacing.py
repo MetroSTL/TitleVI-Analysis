@@ -17,18 +17,24 @@ routes_gdb = r"C:\Users\wkjenkins\gis\titlevi\20210119\arcpro\routes.gdb"
 arcpy.env.workspace = gdb
 arcpy.ClearWorkspaceCache_management()
 
-routes_dir = os.path.join(gdb, 'MetroBusRoutes_dir__200120')
+routes_dir = os.path.join(gdb, 'MetroBusRoutes_dir__200120') # ! are these route geometries?
 routesRoute_field = "RouteAbbr"
 
-route_types = os.path.join(gdb, 'RouteTypes')
+route_types = os.path.join(gdb, 'RouteTypes') # ! what are these again? like, local/express/frequent etc.?
 routesTypes_field = "RouteAbbre"
 
+# get fresh GDB's in this location to re-run stop spacing
 replaceGDB(root_dir, f'routes_{year}.gdb')
 replaceGDB(root_dir, f'routes_split_{year}.gdb')
 
 arcpy.env.workspace = gdb
+
+# join routes with route type information
 arcpy.AddJoin_management(routes_dir, routesRoute_field, route_types, routesTypes_field)
 
+
+# redefine route direction byy 1 and 0 rather than character combinations,
+# then split route by direction for separate analysis
 if 'NewDir' in arcpy.Describe(routes_dir).fields:
     arcpy.DeleteField_management(routes_dir, 'NewDir')
 
@@ -50,11 +56,15 @@ dirRouteBlock = '''def direction(str):
     else:
         return -1'''
 
-arcpy.CalculateField_management(routes_dir, 'NewDir', "direction(!DirName!)", "PYTHON3", dirRouteBlock)
-split_gdb = arcpy.SplitByAttributes_analysis(routes_dir, os.path.join(root_dir, f'routes_split_{year}.gdb'), ["RouteAbbr", "NewDir"])[0]
+arcpy.CalculateField_management(routes_dir, 'NewDir', "direction(!DirName!)", "PYTHON3", dirRouteBlock) # use code block above to cal the field
+split_gdb = arcpy.SplitByAttributes_analysis(routes_dir, os.path.join(root_dir, f'routes_split_{year}.gdb'), ["RouteAbbr", "NewDir"])[0] # ! I can't tell whether this give me two files, or what happens
 
 replaceGDB(root_dir, f'stops_split_{year}.gdb')
 
+# the same as above, for stops
+# ! can stops be defined with multiple directions depending on the route?
+if 'NewDir' in arcpy.Describe(os.path.join(gdb, "MetroBusStopsByLine__200120")).fields:
+    arcpy.DeleteField_management(os.path.join(gdb, "MetroBusStopsByLine__200120"), 'NewDir')
 
 dirBlock = '''def dirCalc(str):
     if "EAST" in str :
@@ -70,18 +80,15 @@ dirBlock = '''def dirCalc(str):
     elif "CLOCKWISE" in str:
         return "1"
     else:
-        return 2'''
+        return 2''' # ! any reason it isn't -1 like above?
 
-
-
-if 'NewDir' in arcpy.Describe(os.path.join(gdb, "MetroBusStopsByLine__200120")).fields:
-    arcpy.DeleteField_management(os.path.join(gdb, "MetroBusStopsByLine__200120"), 'NewDir')
-
+# ! Define this above?
 arcpy.AddField_management(os.path.join(gdb, "MetroBusStopsByLine__200120"), 'NewDir', 'text')
 arcpy.CalculateField_management(os.path.join(gdb, "MetroBusStopsByLine__200120"), 'NewDir', "dirCalc(!Dir!)", "PYTHON3", dirBlock)
 
 arcpy.SplitByAttributes_analysis(os.path.join(gdb, "MetroBusStopsByLine__200120"), os.path.join(root_dir, f'stops_split_{year}.gdb'), ['RouteCode', 'NewDir'])
 
+# ! I am not 100% on what this loop does
 arcpy.env.workspace = os.path.join(root_dir, f'routes_split_{year}.gdb')
 for route in arcpy.ListFeatureClasses():
     arcpy.env.workspace = os.path.join(root_dir, f'routes_split_{year}.gdb')
@@ -103,7 +110,8 @@ split_route_list = arcpy.ListFeatureClasses('_split')
 
 merge_routes_split = arcpy.Merge_management(split_route_list, os.path.join(gdb, f'RoutesSplit_{year}'))[0]
 
-# breaks here!
+# ! wuh oh is this still true?
+# breaks here! 
 # merge all spilt route in gdb to the same feature class
 # calculate length
 
@@ -120,7 +128,7 @@ if 'LengthMiles' in arcpy.Describe(merge_routes_split).fields:
 
 arcpy.CalculateField_management(merge_routes_split, 'LengthMiles', "!shape.length@miles!")
 
-# distance passing calculations
+# determine whether spacing between stops meets the service standard
 
 def isPassing(type, length):
     if type == "Frequent":

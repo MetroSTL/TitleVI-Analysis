@@ -4,16 +4,22 @@ import shutil
 
 from helpers import *
 
+# ! is this one less updated? since it's only used in TNI?
 
+# Uses census inputs to calculate totals and percentage of households with limited car access 
+# in each census block group. Then, determine which blockgroups are greater than the regional 
+# and county average for no car households.
 def lowCar(year, root_dir, tracts_mergegdb, region, places, tracts_file, commute_file, final_gdb_loc):
     gdb = f"LowCar{year}.gdb"
     ap.env.workspace = os.path.join(root_dir, gdb)  # -----> Change Year
     ap.ClearWorkspaceCache_management()
 
     outputgdb = ap.env.workspace
-    working_file = "LowCar_working"
+    working_file = f"LowCar{year}_working"
 
     working_gdb = os.path.join(root_dir, gdb)
+
+    # ! are these supposed to go into working or output gdb?
 
     cw = os.path.join(working_gdb, "NoCar_working_County")
     cw_file = f"NoCar{year}_Working_County"

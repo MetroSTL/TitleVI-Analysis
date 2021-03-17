@@ -1,3 +1,4 @@
+# ! are the imports needed if they are defined in main?
 import arcpy as ap
 import os
 import shutil
@@ -8,13 +9,15 @@ from arcgis import GIS
 
 from helpers import *
 
+# ! I like the API route, but how finished is this? And how does it feed into the lep
+
 def lepTracts(census_key, year, tract_mergedgdb, tract_file, root_dir, gdb, final_gdb_loc, region):
     
     # initial census call
     c = Census(census_key, year=2000+int(year))
 
 
-    print('here')
+    print('here') # <3
     # call the acs 5 year tracts api for MO and IL convert to DF's and merge
     mo = c.acs5.state_county_tract(("GEO_ID", "C16001_005E", "C16001_008E","C16001_011E","C16001_014E","C16001_017E","C16001_020E","C16001_023E","C16001_026E","C16001_029E","C16001_035E"), states.MO.fips, '189,510', Census.ALL)
     mo = pd.DataFrame(mo)
