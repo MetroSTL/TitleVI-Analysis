@@ -223,15 +223,6 @@ def minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hi
          return 0
          """)
 
-    # OLD WAY OF CALCULATION USING DENSITY
-    # ap.CalculateFields_management(in_table=twrw, expression_type="PYTHON3",
-    #                               fields="CoMinBG 'ifBlock(!MinorityDens!, !CoMinorityDens!)';RegMinBG 'ifBlock(!MinorityDens!, !RegMinorityDens!)'",
-    #                               code_block="""def ifBlock(area, region):
-    #   if area > region:
-    #      return 1
-    #   else:
-    #      return 0
-    #      """)
     print("---------------------------")
     print("Above LEP Density Calculations Completed")
 
@@ -239,23 +230,6 @@ def minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hi
     ap.SpatialJoin_analysis(twrw, places, twrw_places)
     print("---------------------------")
     print("Places Spatial Join")
-
-    # ! this is all in cleanUp now, yeah?
-    # for field in delete_fields:
-    #     ap.DeleteField_management(twrw_places, field)
-    #     print("---------------------------")
-    #     print(field + " DELETED")
-    #     print("---------------------------")
-    #
-    # print("Minority_Final feature class created - Script Complete!!!")
-    #
-    # ap.ClearWorkspaceCache_management()
-    #
-    # deleteFeatureClass(final_file, final_gdb_loc)
-    #
-    # # CREATE FINAL FEATURE CLASS
-    # ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
-    # print("---------------------------")
 
     # remove these unnecessary fields in the cleanup stage
     delete_fields = ["Join_Count", "Join_Count_1", "TARGET_FID_12", "Target_FID", "Target_FID_1", "Join_Count_12",

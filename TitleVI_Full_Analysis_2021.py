@@ -17,21 +17,23 @@ from tni import *
 
 # *******GLOBAL VARIABLES*****
 # year = str(input('What Year? "YY": '))
-year = '13'
+year = '13' # 13, 17, 18 COULD BE EXPANDED IF YOU JUST USED THE CENSUS API FOR EVERYTHING
 root_dir = r"C:\Users\wkjenkins\gis\titlevi\20210119\new_output"
 
+
 # api key to access census data using the Census package
-census_key = '926b40d26ccd30996f8a0222ce5d4458240a7ac2'
+census_key = '926b40d26ccd30996f8a0222ce5d4458240a7ac2' # api key signup => https://api.census.gov/data/key_signup.html
 
 # ACS GDB's ---> USE STANDARD ACS BLOCKGOUP AND TRACT FILES GDB FILES (https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-data.html)
 ## Download format f"https://www2.census.gov/geo/tiger/TIGER_DP/20{year}ACS/ACS_20{year}_5YR_BG_29.gdb.zip"
-census_url = f"https://www2.census.gov/geo/tiger/TIGER_DP/20{year}ACS/ACS_20{year}_5YR_BG_29.gdb.zip"
-bg_mergegdb = rf"C:\Users\wkjenkins\gis\local_layers\ACS_20{year}_5YR_BG\merge.gdb"
-tracts_mergegdb = rf"C:\Users\wkjenkins\gis\local_layers\ACS_20{year}_5YR_TRACT\merge.gdb"
+# census_url = f"https://www2.census.gov/geo/tiger/TIGER_DP/20{year}ACS/ACS_20{year}_5YR_BG_29.gdb.zip" # depricated due to usage of census api
+bg_mergegdb = rf"W:\Research&Development\Data-Share\layers\ACS\ACS_20{year}_5YR_BG\merge.gdb"
+tracts_mergegdb = rf"W:\Research&Development\Data-Share\layers\ACS\ACS_20{year}_5YR_TRACT\merge.gdb"
 
-places = r'C:\Users\wkjenkins\gis\titlevi\20210119\python_input\MO_IL_Places_2017.shp'
-routes = r'C:\Users\wkjenkins\gis\titlevi\20210119\python_input\MetroBusRoutes_COA_190917.shp' # ------> Select Routes file
-region = r'C:\Users\wkjenkins\gis\titlevi\20210119\python_input\Region.shp'
+places = r'W:\Research&Development\Data-Share\layers\boundaries\muni\MO_IL_Places_2017.shp'
+routes = r'A:\Open Data Admin\AutomationExports\CurrentFiles.gdb\MetroBusRoutes_REGISTERED' # ------> Select Routes file MIGHT WORK BETTER IF YOU DUPLICATIED CURRENTFILES.GDB TO ../DATA-SHARE/LAYERS
+region = r'W:\Research&Development\Data-Share\layers\boundaries\county\Region.shp'
+
 
 
 # INPUT GEOMETRY FILES - names of GDB's
@@ -53,7 +55,7 @@ inc_file = "X19_INCOME"
 final_gdb = f'Final_{year}.gdb'
 final_gdb_loc = os.path.join(root_dir, final_gdb)
 
-# ! briefly -- why is this here?
+# CLEARS OUT LOCK FILE FROM ESRI FROM WHATEVER JUST HAPPENED OR HAPPENING
 ap.ClearWorkspaceCache_management()
 
 
@@ -69,7 +71,8 @@ ap.ClearWorkspaceCache_management()
 
 # poverty(year, root_dir, bg_mergegdb, region, places, bg_file, pov_file, final_gdb_loc)
 
-# ! why does lep use the census key and the other functions do not?
+# ! why does lep use the census key and the other functions do not? 
+# Because I developing that method when I was testing out the Census API It should all be moved over eventually to improve the workflow
 lep(year, root_dir, bg_mergegdb, region, places, bg_file, lep_file, final_gdb_loc, census_key, tracts_mergegdb, tracts_file)
 
 # minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hisp_file, final_gdb_loc)

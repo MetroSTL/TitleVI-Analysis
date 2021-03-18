@@ -181,20 +181,5 @@ def lowCar(year, root_dir, tracts_mergegdb, region, places, tracts_file, commute
     print("Places Spaital Join")
 
     # CREATE FINAL FEATURE CLASS
-    # ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
-    # print("NoCar_final feature class created - Script Complete!!!")
-
-    # # FOR LOOP FOR CLEANING UP TABLE BY DELETING OUT ALL OF THE FIELDS IN THE DELETE_FIELDS LIST
-    # for field in delete_fields:
-    #     ap.DeleteField_management(final_file, field)
-    #     print(field + " DELETED")
-    #
-    #
-    # deleteFeatureClass(final_file, final_gdb_loc)
-    # ap.ClearWorkspaceCache_management()
-    #
-    # # CREATE FINAL FEATURE CLASS
-    # ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
-    # print("---------------------------")
 
     cleanUp(twrw_places, gdb, final_file, final_gdb_loc, delete_fields)

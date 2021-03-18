@@ -136,27 +136,6 @@ def poverty(year, root_dir, bg_mergedgdb, region, places, bg_file, pov_file, fin
     print("---------------------------")
     print("Places Spaital Join")
 
-   # ! is this handled in cleanup now?
-    # # CREATE FINAL FEATURE CLASS
-    # ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
-    # print("---------------------------")
-
-    # for field in delete_fields:
-    #     ap.DeleteField_management(final_file, field)
-    #     print("---------------------------")
-    #     print(field + " DELETED")
-    #     print("---------------------------")
-    #
-    # print("Poverty_Final feature class created - Script Complete!!!")
-    #
-    # ap.ClearWorkspaceCache_management()
-    #
-    # deleteFeatureClass(final_file, final_gdb_loc)
-    #
-    # # CREATE FINAL FEATURE CLASS
-    # ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
-    # print("---------------------------")
-
     # remove these unnecessary fields in the cleanup stage
     delete_fields = ['GEOID_1','SUM_TFam','SUM_TPov','SUM_TFam','SUM_SqMiles','SUM_TFam_1','SUM_TPov_1','SUM_TFam_1','SUM_SqMiles_1', 
                      'Join_Count','TARGET_FID','Join_Count_1','TARGET_FID_1','Join_Count_12','TARGET_FID_12','B17010e1','C17002e1','C17002e2', 

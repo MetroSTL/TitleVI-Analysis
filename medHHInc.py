@@ -125,23 +125,5 @@ def medHHInc(year, root_dir, bg_mergegdb, region, places, bg_file, inc_file, fin
 
 
     # for field in delete_fields:
-    #     try:
-    #         ap.DeleteField_management(twrw_places, field)
-    #         print("")
-    #         print("---------------------------")
-    #         print(field + " DELETED")
-    #         print("---------------------------")
-    #     except:
-    #         print(field + ' does not exist')
-    #
-    # ap.ClearWorkspaceCache_management()
-    #
-    # deleteFeatureClass(final_file, final_gdb_loc)
-    #
-    # # CREATE FINAL FEATURE CLASS
-    # ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
-    # print("")
-    # print("---------------------------")
-    # print("MedHHInc_Final feature class created - Script Complete!!!")
 
     cleanUp(twrw_places, gdb, final_file, final_gdb_loc, delete_fields)

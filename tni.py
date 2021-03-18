@@ -6,7 +6,7 @@ import shutil
 
 from helpers import *
 
-# ! are we using tni at all? 
+# ! are we using tni at all? EHHHH NOT REALLY
 # Compute Transit Need Index (TNI) based on the 2003 service standards for each census blockgroup.
 # Use the minority, income, age and car ownership data computed in prior functions as inputs, and
 # add a feature class indicating TNI to the final output gdb (final_gdb_loc)
@@ -24,7 +24,7 @@ def tni(year, root_dir, final_gdb_loc):
    senior_fc = os.path.join(final_gdb_loc, f'Senior{year}_final')
    NoCar_fc = os.path.join(final_gdb_loc, f"NoCar{year}_Final")
 
-   arcpy.env.workspace = os.path.join(root_dir, gdb)  # -----> Change Year # ! what is this comment?
+   arcpy.env.workspace = os.path.join(root_dir, gdb)  
    arcpy.ClearWorkspaceCache_management()
 
    # MAke a working feature class from a copy of the minority fc. Define minority TNI fields and calculate them
@@ -32,7 +32,9 @@ def tni(year, root_dir, final_gdb_loc):
 
    arcpy.management.AddFields(in_table=TNI_Minority, field_description=[["TNI_Minority", "DOUBLE"],["PopDens", "DOUBLE"],["RegPopDens", "DOUBLE"],["TNI_Pop", "DOUBLE"]])
 
-   # ! should this use percentage rather than density? If we use this later on I can adjust (if it should be adjusted)
+   # ! should this use percentage rather than density? If we use this later on I can adjust (if it should be adjusted) 
+   # THE OLD WAY WAS USING DENSITY, BUT IT IS REALLY THE SAME THING IN THIS CASE PEOPLE PER SQUARE MILE.
+   # PERCENTAGE IS FASTER
    # Process: Calculate Field (6) (Calculate Field) (management)
    arcpy.management.CalculateField(in_table=TNI_Minority, field="PopDens", expression="!TPOP! / !SqMiles!", expression_type="PYTHON3", code_block="", field_type="TEXT")
    arcpy.management.CalculateField(in_table=TNI_Minority, field="RegPopDens", expression="!RegTPOP! / !RegSqMiles!", expression_type="PYTHON3", code_block="", field_type="TEXT")

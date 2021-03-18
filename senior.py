@@ -36,20 +36,6 @@ def senior(year, root_dir, bg_mergedgdb, region, places, bg_file, sen_file, fina
     # CREATE WORKING GDB
     replaceGDB(root_dir, gdb)
 
-    # ap.FeatureClassToFeatureClass_conversion(bg, outputgdb, working_file,
-    #                                          "GEOID LIKE '29189%' Or GEOID LIKE '29510%' Or GEOID LIKE '17163%'")
-    # print("")
-    # print("---------------------------")
-    # print(working_file + " Created!!!")
-
-    # ap.JoinField_management(in_data=working_file, in_field="GEOID_Data", join_table=senior_table, join_field="GEOID",
-    #                         fields="B01001e1;B01001e20;B01001e21;B01001e22;B01001e23;B01001e24;B01001e25;B01001e44;B01001e45;B01001e46;B01001e47;B01001e48;B01001e49")
-
-
-    
-    # print("")
-    # print("---------------------------")
-    # print("Finished calculating Senior Calcs")
 
     fields_list = ['B01001e1', 'B01001e20', 'B01001e21', 'B01001e22', 'B01001e23', 'B01001e24', 'B01001e25', 'B01001e44', 'B01001e45', 'B01001e46', 'B01001e47', 'B01001e48', 'B01001e49']
 
@@ -156,26 +142,6 @@ def senior(year, root_dir, bg_mergedgdb, region, places, bg_file, sen_file, fina
     ap.SpatialJoin_analysis(twrw, places, twrw_places)
     print("---------------------------")
     print("Places Spaital Join")
-
-    # ! is this handled in cleanup now?
-    # # CREATE FINAL FEATURE CLASS
-    # ap.FeatureClassToFeatureClass_conversion(twrw_places, outputgdb, final_file)
-    # print("---------------------------")
-
-    # for field in list:
-    #     ap.DeleteField_management(final_file, field)
-    #     print("---------------------------")
-    #     print(field + " DELETED")
-    #     print("---------------------------")
-    #
-    # print("Senior_Final feature class created - Script Complete!!!")
-    #
-    # # CREATE FINAL FEATURE CLASS
-    # ap.ClearWorkspaceCache_management()
-    #
-    # deleteFeatureClass(final_file, final_gdb_loc)
-    # ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
-    # print("---------------------------")
 
     # remove these unnecessary fields in the cleanup stage
     delete_fields = ['B01001e20', 'B01001e21', 'B01001e22', 'B01001e23', 'B01001e24', 'B01001e25', 'B01001e44', 'B01001e45',
