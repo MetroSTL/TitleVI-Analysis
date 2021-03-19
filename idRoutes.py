@@ -130,10 +130,10 @@ def idRoutes(year, root_dir, routes, final_gdb_loc):
         ap.CalculateField_management(clip_routes, "IdLength", "!shape.geodesicLength@miles!")
         print("IdLength Field Calculated for " + working_file)
 
-        ap.Dissolve_management(clip_routes, dissolve_routes, 'LineAbbr', [["IdLength", 'sum']]) # collect route pieces by route
+        ap.Dissolve_management(clip_routes, dissolve_routes, 'RouteAbbr', [["IdLength", 'sum']]) # collect route pieces by route
         print(clip_routes + " DISSOLVED")
 
-        ap.JoinField_management(routes_working, "LineAbbr", dissolve_routes, "LineAbbr", ["SUM_IdLength"]) # join and sum ID'ed length
+        ap.JoinField_management(routes_working, "RouteAbbr", dissolve_routes, "RouteAbbr", ["SUM_IdLength"]) # join and sum ID'ed length
         print(routes_working + " JOINED WITH " + dissolve_routes)
 
         ap.AddFields_management(routes_working, add_fields)

@@ -1,3 +1,4 @@
+# this is a preprocessing input to create MO + IL merged bg files 
 import arcpy
 from arcpy import env
 
