@@ -61,14 +61,23 @@ Low car calculates 0-1 car households and 0 car households.
 
 ## medHHInc.py
 
-Median household income
+Median household income calculations
 
 ## minority.py
 
+Minority Calculations uses total populations and Minority is calculated by looking at the total number of non-white populations and the total population that identifies as white and hispanic. The non-white hispanic populations are already captured in the race tables. 
+
 ## poverty.py
+This is where the low income households are calculated. the definition of what a low income household is 150% of the poverty line. 
+
 
 ## senior.py
+Total people above 65 statistics.
 
 ## stopSpacing.py
 
+Stop spacing is an after thought to this whole process. It takes in some custom inputs and is not fully integrated in the process, but it will split routes by direction with the associated stops and then measures out the distance between stops. 
+
 ## tni.py
+
+the Transit Need Inex is a failed attempt at analyzing transit propensity. It takes Population, Senior, Median Househould income and No Car population densities to create a metric to predict demand and determine a good level of service or isolate areas that need more transit. This was the original way of calculating stop distances for the 2018 Title VI analysis. 
