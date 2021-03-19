@@ -18,7 +18,7 @@ from tni import *
 # *******GLOBAL VARIABLES*****
 # year = str(input('What Year? "YY": '))
 year = '13' # 13, 17, 18 COULD BE EXPANDED IF YOU JUST USED THE CENSUS API FOR EVERYTHING
-root_dir = r"C:\Users\wkjenkins\gis\titlevi\20210119\new_output"
+root_dir = r"C:\Users\DFArias\Documents\dev\sandbox_data\title_vi_test"
 
 
 # api key to access census data using the Census package
@@ -31,7 +31,7 @@ bg_mergegdb = rf"W:\Research&Development\Data-Share\layers\ACS\ACS_20{year}_5YR_
 tracts_mergegdb = rf"W:\Research&Development\Data-Share\layers\ACS\ACS_20{year}_5YR_TRACT\merge.gdb"
 
 places = r'W:\Research&Development\Data-Share\layers\boundaries\muni\MO_IL_Places_2017.shp'
-routes = r'A:\Open Data Admin\AutomationExports\CurrentFiles.gdb\MetroBusRoutes_REGISTERED' # ------> Select Routes file MIGHT WORK BETTER IF YOU DUPLICATIED CURRENTFILES.GDB TO ../DATA-SHARE/LAYERS
+routes = r'C:\Users\DFArias\Documents\dev\sandbox_data\CurrentFiles.gdb\MetroBusRoutes_REGISTERED' # ------> Select Routes file MIGHT WORK BETTER IF YOU DUPLICATIED CURRENTFILES.GDB TO ../DATA-SHARE/LAYERS
 region = r'W:\Research&Development\Data-Share\layers\boundaries\county\Region.shp'
 
 
@@ -73,12 +73,12 @@ ap.ClearWorkspaceCache_management()
 
 # ! why does lep use the census key and the other functions do not? 
 # Because I developing that method when I was testing out the Census API It should all be moved over eventually to improve the workflow
-lep(year, root_dir, bg_mergegdb, region, places, bg_file, lep_file, final_gdb_loc, census_key, tracts_mergegdb, tracts_file)
+# lep(year, root_dir, bg_mergegdb, region, places, bg_file, lep_file, final_gdb_loc, census_key, tracts_mergegdb, tracts_file)
 
 # minority(year, root_dir, bg_mergegdb, region, places, bg_file, race_file, hisp_file, final_gdb_loc)
 
 # lowCar(year, root_dir, tracts_mergegdb, region, places, tracts_file, commute_file, final_gdb_loc)
 
-# idRoutes(year, root_dir, routes, final_gdb_loc)
+idRoutes(year, root_dir, routes, final_gdb_loc)
 
-# tni(year, root_dir, final_gdb_loc)
+tni(year, root_dir, final_gdb_loc)
