@@ -73,8 +73,6 @@ def clipPolygons(census_gdb, census_file, boundary_file, output_gdb, output_file
     # calculate percent coverage of clip
     ap.CalculateField_management(output_file, 'coverage', '!SqMiles_clip! / !SqMiles!', 'PYTHON3')
 
-    # recalculate all of the fields bases on the coverage field
-    # ! does this^ actually happen? Or does it happen elsewhere?
 
 # join the input table to the input feature class, then calculate fields on joined fields list
 # ! briefly - what is this function for? It feels like it serves a specific role in the other functions
@@ -110,8 +108,6 @@ def cleanUp(twrw_places, gdb, final_file, final_gdb_loc, delete_fields):
     print("Minority_Final feature class created - Script Complete!!!")
 
     ap.ClearWorkspaceCache_management()
-
-    deleteFeatureClass(final_file, final_gdb_loc) # ! why is this here twice?
 
     # CREATE FINAL FEATURE CLASS
     ap.FeatureClassToFeatureClass_conversion(final_file, final_gdb_loc, final_file)
